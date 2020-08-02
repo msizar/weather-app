@@ -1,0 +1,2 @@
+export const CPT_SUNRISE = 1596346659;
+export const CPT_SUNSET = 1596384440;
