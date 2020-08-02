@@ -1,2 +1,3 @@
-# portfolio
-This is my profile website
+# Weather App
+
+A react weather app for capetown 
