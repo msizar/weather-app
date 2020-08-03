@@ -8,7 +8,11 @@ const styles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       flexGrow: 1,
-      padding: '0px 10px',
+      padding: '5em 10px',
+
+      [theme.breakpoints.up('md')]: {
+        padding: '0px 10px',
+      },
     },
     paper: {
       textAlign: 'center',
