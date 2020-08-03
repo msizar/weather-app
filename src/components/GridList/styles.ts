@@ -45,6 +45,19 @@ const styles = makeStyles((theme: Theme) =>
         width: '90px',
       },
     },
+
+    gridError: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      flexDirection: 'column',
+      padding: '30px 20px',
+      height: '100px',
+
+      [theme.breakpoints.up('md')]: {
+        height: '150px',
+      },
+    },
   }),
 );
 

@@ -7,18 +7,22 @@ import CurrentWeather from '../CurrentWeather';
 import WeatherTimeline from '../WeatherTimeline';
 import WeeklyWeatherTimeline from '../WeeklyWeatherTimeline';
 import Day from '../../models/Day';
+import { Error } from '@material-ui/icons';
+import { Text } from '../Typography';
 
 type Props = {
   data: any;
   dayGradientColor: string;
   todaysWeatherTimes: Day[];
   loading: boolean;
+  errorLoading: boolean;
 };
 export const GridList: React.FC<Props> = ({
   data,
   dayGradientColor,
   todaysWeatherTimes,
   loading,
+  errorLoading,
 }) => {
   const classes = useStyles();
 
@@ -40,11 +44,20 @@ export const GridList: React.FC<Props> = ({
             background: dayGradientColor,
           }}
         >
-          <CurrentWeather
-            city={data ? data.city : ''}
-            today={data ? data.list[0] : null}
-            loading={loading}
-          />
+          {errorLoading ? (
+            <div className={classes.gridError}>
+              <Error />
+              <Text>
+                Forecast data failed to load, please try again later
+              </Text>
+            </div>
+          ) : (
+            <CurrentWeather
+              city={data ? data.city : ''}
+              today={data ? data.list[0] : null}
+              loading={loading}
+            />
+          )}
         </Paper>
       </Grid>
 

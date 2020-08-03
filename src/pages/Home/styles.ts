@@ -33,6 +33,13 @@ const styles = makeStyles((theme: Theme) =>
       position: 'relative',
       textAlign: 'center',
     },
+
+    homeHeader: {
+      display: 'flex',
+      position: 'absolute',
+      top: '10px',
+      right: '10px',
+    },
   }),
 );
 

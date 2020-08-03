@@ -11,17 +11,20 @@ const styles = makeStyles((theme: Theme) =>
     },
 
     root: {
+      marginTop: '4px',
+      width: '66px',
       'label + &': {
         marginTop: theme.spacing(3),
       },
     },
     input: {
-      borderRadius: 15,
+      borderRadius: 10,
       position: 'relative',
       backgroundColor: theme.palette.background.paper,
       border: '1px solid #ced4da',
       fontSize: 16,
-      padding: '10px 26px 10px 12px',
+      padding: '7px 26px 8px 12px',
+
       transition: theme.transitions.create([
         'border-color',
         'box-shadow',
@@ -40,16 +43,13 @@ const styles = makeStyles((theme: Theme) =>
         '"Segoe UI Symbol"',
       ].join(','),
       '&:focus': {
-        borderRadius: 15,
+        borderRadius: 10,
         borderColor: '#80bdff',
         boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)',
       },
     },
 
     unitSwitchRoot: {
-      position: 'absolute',
-      top: '10px',
-      right: '90px',
       marginRight: '0px',
     },
   }),

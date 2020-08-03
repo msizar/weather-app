@@ -1,32 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 
 import useStyles from './styles';
 import GridList from '../../components/GridList';
-import DarkModeSwitch from '../../components/DarkModeSwitch';
 import { getWeather } from '../../services/forecast';
 import getBackground from '../../helpers/getBackground';
 import Day from '../../models/Day';
 import UnitSwitch from '../../components/UnitSwitch';
+import GitButton from '../../components/GitButton';
+import Modal from '../../components/Modal';
 
 const Home: React.FC = () => {
   const classes = useStyles();
-  const [darkMode, setDarkMode] = useState<boolean>(false);
   const [data, setData] = useState();
   const [unit, setUnit] = useState<string>('metric');
   const [todaysData, setTodayData] = useState<Day[]>();
   const [background, setBackground] = useState<string>('');
   const [timerOn, setTimerOn] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-
-  /**
-   * handle switch change
-   * @param event
-   */
-  const handleChange = (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    setDarkMode(event.target.checked);
-  };
+  const [openModal, setOpenModal] = useState<boolean>(false);
+  const [errorLoading, setErrorLoading] = useState<boolean>(false);
 
   const handleChangeUnits = (
     event: React.ChangeEvent<{ value: unknown }>,
@@ -35,11 +27,18 @@ const Home: React.FC = () => {
     setTimerOn(false);
   };
 
+  const toggleModal = () => {
+    setOpenModal(!openModal);
+  };
+
   /**
-   * Call service data
+   * Callback service data
    */
-  const getWeatherData = () => {
+  const getWeatherData = useCallback(() => {
+    setOpenModal(false);
     setLoading(true);
+    setErrorLoading(false);
+
     getWeather(unit)
       .then((res) => {
         setLoading(false);
@@ -53,9 +52,11 @@ const Home: React.FC = () => {
         }
       })
       .catch((err) => {
+        setOpenModal(true);
         setLoading(false);
+        setErrorLoading(true);
       });
-  };
+  }, [unit]);
 
   useEffect(() => {
     let handle: any;
@@ -67,25 +68,33 @@ const Home: React.FC = () => {
     return () => {
       clearInterval(handle);
     };
-  });
+  }, [getWeatherData, timerOn]);
+
+  /**
+   * close modal and retry
+   */
+  const onClickRetry = () => {
+    setOpenModal(false);
+  };
 
   return (
-    <div
-      className={`${classes.homeRoot}  ${
-        darkMode && classes.homeRootDark
-      }`}
-    >
-      <DarkModeSwitch
-        darkMode={darkMode}
-        handleChange={handleChange}
-      />
+    <div className={classes.homeRoot}>
+      <div className={classes.homeHeader}>
+        <UnitSwitch unit={unit} handleChange={handleChangeUnits} />
+        <GitButton />
+      </div>
 
-      <UnitSwitch unit={unit} handleChange={handleChangeUnits} />
       <GridList
         dayGradientColor={background}
         data={data}
         todaysWeatherTimes={todaysData || []}
         loading={loading}
+        errorLoading={errorLoading}
+      />
+      <Modal
+        onClickRetry={onClickRetry}
+        open={openModal}
+        handleClose={toggleModal}
       />
     </div>
   );
